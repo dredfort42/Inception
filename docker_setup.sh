@@ -130,31 +130,32 @@ sudo rm -rf docker_test
 echo
 echo "[21] DOCKER TEST DATA ERRASED ####################"
 echo
-
-sleep 1
-clear
-echo
-echo
-echo
-echo "      ##############################################"
-echo "      #                                            #"
-echo "      #          SYSTEM WILL BE RESTARTED          #"
-echo "      #                                            #"
-echo "      ##############################################"
-echo
-echo
-echo
-sleep 3
-sudo reboot
-
-
-# git=$(ls -la | grep inception | wc -l)
-# if [ "$git" = "$empty" ]
-# then
-#     git clone https://github.com/rbiodies/inception.git
-# else
-#     cd inception
-#     git pull
-# fi
+git=$(ls -la | grep Inception | wc -l)
+if [ "$git" = "$empty" ]
+then
+    git clone https://github.com/dredfort42/Inception.git
+else
+    cd Inception/
+    git pull
+    cd ..
+fi
+rm Inception/docker_setup.sh
 
 # make up
+
+
+# sleep 1
+# clear
+# echo
+# echo
+# echo
+# echo "      ##############################################"
+# echo "      #                                            #"
+# echo "      #          SYSTEM WILL BE RESTARTED          #"
+# echo "      #                                            #"
+# echo "      ##############################################"
+# echo
+# echo
+# echo
+# sleep 3
+# sudo reboot

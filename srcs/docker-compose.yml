@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  nginx:
+    # depends_on:
+    #   - wordpress
+    container_name: nginx
+    build: ./requirements/nginx
+    image: nginx:dredfort
+    ports:
+      - "443:443"
+    # volumes:
+    #   - wordpress:/var/www/wordpress
+    networks:
+      - localhost
+    restart: always
+
+networks:
+  localhost:
+    name: 21net
