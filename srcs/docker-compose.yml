@@ -1,20 +1,80 @@
-version: '3'
+version: "3.8"
 
 services:
-  nginx:
-    # depends_on:
-    #   - wordpress
-    container_name: nginx
-    build: ./requirements/nginx
-    image: nginx:dredfort
-    ports:
-      - "443:443"
-    # volumes:
-    #   - wordpress:/var/www/wordpress
+
+  # wordpress:
+  #     container_name: wordpress
+  #     image: wordpress
+  #     networks: 
+  #       - net21
+  #     ports:
+  #       - 80:80
+  #     restart: always
+
+
+  mariadb: 
+    container_name: mariadb
+    build: ./requirements/mariadb
+    volumes: 
+      - mysql:/var/lib/mysql
     networks:
-      - localhost
+      - net21
     restart: always
 
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    # image: wordpress
+    depends_on: 
+      - mariadb
+    volumes: 
+      - html:/var/www/html
+    networks: 
+      - net21
+    # ports:
+    #   - 80:80
+    restart: always
+
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    depends_on: 
+      - wordpress
+    volumes: 
+      - html:/var/www/html
+    networks: 
+      - net21
+    ports:
+      - 443:443
+    hostname:
+      dredfort.42.fr
+    restart: always
+
+  # adminer:
+  #   container_name: adminer
+  #   image: adminer
+  #   networks: 
+  #     - net21
+  #   ports:
+  #     - 8080:8080
+  #   restart: always
+
+volumes: 
+  mysql:
+    name: mysql
+    driver: local
+    driver_opts: 
+      device: /home/dredfort/data/mysql
+      o: bind
+      type: none
+  html:
+    name: html
+    driver: local
+    driver_opts: 
+      device: /home/dredfort/data/html
+      o: bind
+      type: none
+
 networks:
-  localhost:
-    name: 21net
+  net21: 
+    driver: bridge
