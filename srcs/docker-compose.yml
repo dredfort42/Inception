@@ -2,18 +2,14 @@ version: "3.8"
 
 services:
 
-  vsftpd:
-    container_name: vsftpd
-    build: ./requirements/bonus/vsftpd
-    env_file: .env
-    restart: always
-    volumes: 
-      - html:/home/$FTP_USER/ftp
-    networks:
+  redis:
+      container_name: redis
+      build: ./requirements/bonus/redis
+      restart: always
+      networks:
       - net21
-    ports:
-      - 21:21
-      - 2121-2142:2121-2142
+      ports:
+      - 6379:6379
 
   mariadb: 
     container_name: mariadb
@@ -27,9 +23,11 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
+    env_file: .env
     restart: always
     depends_on: 
       - mariadb
+      - redis
     volumes: 
       - html:/var/www/html
     networks: 
@@ -50,6 +48,33 @@ services:
     hostname:
       dredfort.42.fr
 
+  vsftpd:
+    container_name: vsftpd
+    build: ./requirements/bonus/vsftpd
+    env_file: .env
+    restart: always
+    volumes: 
+      - html:/home/$FTP_USER/ftp
+    networks:
+      - net21
+    ports:
+      - 21:21
+      - 21021-21042:21021-21042
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer:/data
+    networks:
+      - net21
+    ports:
+      - 9000:9000
+
+
 volumes: 
   mysql:
     name: mysql
@@ -63,6 +88,13 @@ volumes:
     driver: local
     driver_opts: 
       device: /home/dredfort/data/html
+      o: bind
+      type: none
+  portainer:
+    name: portainer
+    driver: local
+    driver_opts:
+      device: /home/dredfort/data/portainer
       o: bind
       type: none
 

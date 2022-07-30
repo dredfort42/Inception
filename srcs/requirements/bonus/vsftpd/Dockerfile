@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:buster
 
 RUN apt-get update -y
 RUN apt-get install vsftpd -y
@@ -17,7 +17,6 @@ COPY ./conf/vsftpd.conf ./etc/vsftpd.conf
 COPY ./tools/entrypoint.sh ./entrypoint.sh
 
 EXPOSE 21
-EXPOSE 2121-2142
+EXPOSE 21021-21042
 
 CMD bash ./entrypoint.sh
-# CMD tail -f

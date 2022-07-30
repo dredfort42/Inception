@@ -1,5 +1,5 @@
 all:
-	@mkdir -p /home/dredfort/data/mysql /home/dredfort/data/html
+	@mkdir -p /home/dredfort/data/mysql /home/dredfort/data/html /home/dredfort/data/portainer
 	docker-compose -f ./srcs/docker-compose.yml up -d
 
 ps:
@@ -20,7 +20,7 @@ docker:
 	@chmod 777 /home/dredfort/Inception/srcs/requirements/tools/docker_setup.sh
 	@chmod 777 /home/dredfort/Inception/srcs/requirements/tools/docker_test.sh
 	@sudo rm -rf /home/dredfort/data
-	@mkdir -p /home/dredfort/data/mysql /home/dredfort/data/html
+	@mkdir -p /home/dredfort/data/mysql /home/dredfort/data/html /home/dredfort/data/portainer
 	bash /home/dredfort/Inception/srcs/requirements/tools/docker_setup.sh
 	bash /home/dredfort/Inception/srcs/requirements/tools/docker_test.sh
 	make all
